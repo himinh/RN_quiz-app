@@ -66,6 +66,8 @@ export const QuizScreen = ({ navigation, route }) => {
           {/* Error message */}
           <Text style={styles.error}>{error}</Text>
         </>
+      ) : loading ? (
+        <Text style={styles.text}>loading...</Text>
       ) : quizzes.length > 0 ? (
         <View style={styles.itemsContainer}>
           {/* Quizzes list */}
@@ -154,7 +156,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 30,
     position: 'relative',
   },
-  text: { margin: 20, fontSize: 22, textAlign: 'center', color: 'red' },
+  text: { margin: 20, fontSize: 22, textAlign: 'center', color: 'white' },
   buttonCreate: {
     position: 'fixed',
     bottom: 40,

@@ -1,4 +1,3 @@
-import React, { useState } from 'react'
 import {
   StyleSheet,
   Text,
@@ -7,11 +6,8 @@ import {
   TouchableOpacity,
 } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { useDispatch } from 'react-redux'
 
-export const Search = ({ search, setSearch, onSearch }) => {
-  const dispatch = useDispatch()
-
+export const Search = ({ text, setText, onSearch }) => {
   return (
     <View style={{ paddingHorizontal: 16 }}>
       <Text style={{ fontSize: 22, color: '#61688B', marginTop: 15 }}>
@@ -19,12 +15,12 @@ export const Search = ({ search, setSearch, onSearch }) => {
       </Text>
       <View style={styles.searchContainer}>
         <TextInput
-          value={search}
-          onChangeText={e => setSearch(e)}
+          value={text}
+          onChangeText={e => setText(e)}
           style={styles.searchInput}
           placeholder='Search for anything'
         />
-        <TouchableOpacity onPress={onSearch}>
+        <TouchableOpacity onPress={() => onSearch(text)}>
           <Icon style={styles.iconSearch} size={30} name='search' />
         </TouchableOpacity>
       </View>

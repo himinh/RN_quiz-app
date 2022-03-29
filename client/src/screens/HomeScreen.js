@@ -16,7 +16,7 @@ import { Header, Search, CategoriesCard } from '../components'
 
 export const HomeScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false)
-  const [search, setSearch] = useState('')
+  const [searchText, setSearchText] = useState('')
   const categories = useSelector(categoriesFilteredSelector)
   const dispatch = useDispatch()
 
@@ -37,7 +37,7 @@ export const HomeScreen = ({ navigation }) => {
   }, [])
 
   const handleSearch = () => {
-    dispatch(filterCategories(search))
+    dispatch(filterCategories(searchText))
   }
 
   return (
@@ -45,7 +45,11 @@ export const HomeScreen = ({ navigation }) => {
       {/* Header */}
       <Header navigation={navigation} />
       {/* Search categories */}
-      <Search search={search} setSearch={setSearch} onSearch={handleSearch} />
+      <Search
+        text={searchText}
+        setText={setSearchText}
+        onSearch={handleSearch}
+      />
 
       <View style={{ marginTop: 20, paddingHorizontal: 16 }}>
         <View style={styles.buttonCategories}>
@@ -53,8 +57,8 @@ export const HomeScreen = ({ navigation }) => {
 
           <TouchableOpacity
             onPress={() => {
-              setSearch('')
               dispatch(filterCategories(''))
+              setSearchText('')
             }}
           >
             <Text style={styles.buttonTextV}>See All</Text>
