@@ -1,3 +1,4 @@
 export * from './HomeScreen'
-export * from './Login/SignInScreen'
-export * from './Login/SignUpScreen'
+export * from './Auth'
+export * from './Quizz'
+export * from './Admin'

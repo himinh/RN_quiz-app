@@ -1,12 +1,22 @@
-import 'react-native-gesture-handler'
-import { StyleSheet, View } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
-import { AuthStackNavigator } from './src/navigators/AuthStackNavigator'
+import { AuthStackNavigator, AppStackNavigator } from './src/navigators'
+import { Provider, useSelector } from 'react-redux'
+import { store } from './src/redux/store'
+import { authSelector } from './src/redux/selector'
 
-export default function App() {
+const App = () => {
+  const { token } = useSelector(authSelector)
   return (
     <NavigationContainer>
-      <AuthStackNavigator />
+      {token ? <AppStackNavigator /> : <AuthStackNavigator />}
     </NavigationContainer>
+  )
+}
+
+export default function Index() {
+  return (
+    <Provider store={store}>
+      <App />
+    </Provider>
   )
 }
