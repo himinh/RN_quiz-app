@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#252c4a',
     flex: 1,
     paddingHorizontal: 20,
+    paddingBottom: 20,
   },
   buttonCategories: {
     paddingVertical: 25,

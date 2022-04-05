@@ -14,12 +14,12 @@ import { UserModule } from 'src/user/user.module';
       isGlobal: true,
     }),
     MongooseModule.forRoot(process.env.MONGODB_URI),
-    UserModule,
     AuthModule,
+    CategoriesModule,
     QuizzesModule,
     QuestionsModule,
     UploadModule,
-    CategoriesModule,
+    UserModule,
   ],
 })
 export class AppModule {}

@@ -1,4 +1,4 @@
-import { CREATE_QUIZ, ADD_QUIZZES } from '../constants'
+import { CREATE_QUIZ, ADD_QUIZZES, DELETE_QUIZ, CLEAR_QUIZ } from '../constants'
 
 const quizzesState = []
 export const quizzesReducer = (state = quizzesState, action) => {
@@ -8,6 +8,12 @@ export const quizzesReducer = (state = quizzesState, action) => {
 
     case ADD_QUIZZES:
       return action.payload
+
+    case DELETE_QUIZ:
+      return state.filter(quiz => quiz.id != action.payload)
+
+    case CLEAR_QUIZ:
+      return quizzesState
 
     default:
       return state

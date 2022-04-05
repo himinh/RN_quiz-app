@@ -5,9 +5,8 @@ import * as yup from 'yup'
 import { useDispatch } from 'react-redux'
 import { View, Text, SafeAreaView, StyleSheet } from 'react-native'
 import { FormButton, FormInput } from '../../components'
-import { COLORS } from '../../constants/theme'
 import { axiosInstance } from '../../utils/axiosInstance'
-import { register, authRequest } from '../../redux/actions'
+import { register } from '../../redux/actions'
 import * as Animatable from 'react-native-animatable'
 
 const registerSchema = yup.object({
@@ -128,7 +127,7 @@ export const SignUpScreen = ({ navigation }) => {
         >
           <Text>Already have an account?</Text>
           <Text
-            style={{ marginLeft: 4, color: COLORS.primary }}
+            style={{ marginLeft: 4, color: '#4630EB' }}
             onPress={() => navigation.navigate('SignInScreen')}
           >
             Login

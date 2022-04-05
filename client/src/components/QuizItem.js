@@ -1,7 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { FontAwesome } from '@expo/vector-icons'
-import { COLORS } from '../constants/theme'
 
 export const QuizItem = ({ quiz, navigation }) => {
   return (
@@ -35,7 +34,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: COLORS.white,
+    backgroundColor: '#fff',
     elevation: 2,
   },
   buttonPlay: {
@@ -46,5 +45,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  quizTitle: { fontSize: 18, color: COLORS.black, fontWeight: 'bold' },
+  quizTitle: { fontSize: 18, color: '#171717', fontWeight: 'bold' },
 })

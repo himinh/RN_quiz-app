@@ -1,6 +1,5 @@
 import React from 'react'
 import { View, Text, TextInput } from 'react-native'
-import { COLORS } from '../../constants/theme'
 
 export const FormInput = ({
   labelText = '',
@@ -22,7 +21,7 @@ export const FormInput = ({
       <TextInput
         style={{
           padding: 10,
-          borderColor: !error ? 'black' + '20' : 'red',
+          borderColor: !error ? '#d3d3d3' : 'red',
           borderWidth: 1,
           width: '100%',
           borderRadius: 5,

@@ -5,116 +5,78 @@ import {
   SafeAreaView,
   StatusBar,
   FlatList,
-  Image,
-  TouchableOpacity,
   StyleSheet,
 } from 'react-native'
-import { COLORS } from '../../constants/theme'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { FormButton, QuestionItem, ResultModal } from '../../components'
 import { axiosInstance } from '../../utils/axiosInstance'
 
-const getOptionBgColor = (currentQuestion, currentOption) => {
-  console.log({ currentQuestion, currentOption })
-  if (currentQuestion.selectedOption) {
-    if (currentOption == currentQuestion.selectedOption) {
-      if (currentOption == currentQuestion.correctAnswer) {
-        return COLORS.success
-      } else {
-        return COLORS.error
-      }
-    } else {
-      return COLORS.white
-    }
-  } else {
-    return COLORS.white
-  }
-}
-
-const getOptionTextColor = (currentQuestion, currentOption) => {
-  if (currentQuestion.selectedOption) {
-    if (currentOption == currentQuestion.selectedOption) {
-      return COLORS.white
-    } else {
-      return COLORS.black
-    }
-  } else {
-    return COLORS.black
-  }
+const shuffleAnswers = question => {
+  const unshuffleAnwers = [question.correctAnswer, ...question.incorrectAnswers]
+  return unshuffleAnwers
+    .map(anwer => ({ sort: Math.random(), value: anwer }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(obj => obj.value)
 }
 
 export const PlayQuizScreen = ({ navigation, route }) => {
-  const [quizId, setQuizId] = useState(route.params.quizId)
+  const { quizId } = route.params
   const [title, setTitle] = useState('')
   const [questions, setQuestions] = useState([])
   const [correctCount, setCorrectCount] = useState(0)
   const [incorrectCount, setIncorrectCount] = useState(0)
   const [isResultModalVisible, setIsResultModalVisible] = useState(false)
 
-  const shuffleArray = array => {
-    for (let i = array.length - 1; i > 0; i--) {
-      // Generate random number
-      let j = Math.floor(Math.random() * (i + 1))
-
-      let temp = array[i]
-      array[i] = array[j]
-      array[j] = temp
-    }
-    return array
-  }
-
   const getQuizAndQuestionDetails = async () => {
+    // API endpoint
     let getQuiz = axiosInstance.get(`/quizzes/${quizId}`)
     const getQuestionByQuiz = axiosInstance.get(`/questions?quiz=${quizId}`)
 
-    try {
-      const [{ data: quizData }, { data: questionData }] = await Promise.all([
-        getQuiz,
-        getQuestionByQuiz,
-      ])
-      setTitle(quizData.title)
-      console.log(questionData)
-      // Transform and shuffle options
-      let tempQuestions = []
-      questionData.forEach(question => {
-        // Create Single array of all options and shuffle it
-        question.allOptions = shuffleArray([
-          ...question.incorrectAnswers,
-          question.correctAnswer,
-        ])
-        tempQuestions.push(question)
-      })
-      setQuestions(tempQuestions)
-    } catch (error) {
-      console.log({ error })
-    }
+    // Call API
+    const [{ data: quizData }, { data: questionsData }] = await Promise.all([
+      getQuiz,
+      getQuestionByQuiz,
+    ])
+    // Set title
+    setTitle(quizData.title)
+
+    // Transform and shuffle options
+    let tempQuestions = []
+    questionsData.forEach(question => {
+      // Create Single array of all options and shuffle it
+      question.allAnswers = shuffleAnswers(question)
+      tempQuestions.push(question)
+    })
+
+    // Set questions
+    setQuestions(tempQuestions)
   }
 
   useEffect(() => {
     getQuizAndQuestionDetails()
-  }, [])
+  }, [quizId])
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor={COLORS.white} barStyle={'dark-content'} />
+      <StatusBar backgroundColor='#FFFFFF' barStyle={'dark-content'} />
       {/* Top Bar */}
       <View style={styles.topBarContainer}>
         {/* Back Icon */}
         <MaterialIcons
           name='arrow-back'
-          size={24}
-          color={COLORS.white}
+          size={20}
+          color='#FFFFFF'
           onPress={() => navigation.goBack()}
         />
 
         {/* Title */}
         <Text style={styles.title}>{title}</Text>
 
-        {/* Correct and incorrect count */}
+        {/* Count the number of correct or incorrect answers */}
         <View style={styles.countContainer}>
           {/* Correct */}
           <View style={[styles.resultContainer, styles.correctColor]}>
-            <MaterialIcons name='check' size={14} style={styles.white} />
+            <MaterialIcons name='check' size={12} style={styles.white} />
             <Text style={[styles.white, styles.spaceLeft]}>
               {correctCount}'
             </Text>
@@ -122,33 +84,26 @@ export const PlayQuizScreen = ({ navigation, route }) => {
 
           {/* Incorrect */}
           <View style={[styles.resultContainer, styles.incorrectColor]}>
-            <MaterialIcons name='close' size={14} style={styles.white} />
+            <MaterialIcons name='close' size={12} style={styles.white} />
             <Text style={[styles.white, styles.spaceLeft]}>
               {incorrectCount}
             </Text>
           </View>
         </View>
       </View>
+
       {/* Questions and Options list */}
       {questions.length > 0 ? (
         <FlatList
           data={questions}
-          style={{
-            flex: 1,
-            backgroundColor: COLORS.secondary,
-          }}
-          showsVerticalScrollIndicator={false}
+          style={{ flex: 1, backgroundColor: '#000020' }}
           keyExtractor={item => item.id}
           renderItem={({ item, index }) => (
             <QuestionItem
               index={index}
-              item={item}
-              correctCount={correctCount}
+              question={item}
               setCorrectCount={setCorrectCount}
-              incorrectCount={incorrectCount}
               setIncorrectCount={setIncorrectCount}
-              getOptionBgColor={getOptionBgColor}
-              getOptionTextColor={getOptionTextColor}
               questions={questions}
               setQuestions={setQuestions}
               key={index}
@@ -166,7 +121,9 @@ export const PlayQuizScreen = ({ navigation, route }) => {
           )}
         />
       ) : (
-        <Text style={styles.text}>The question list is empty.</Text>
+        <Text style={[styles.text, { color: 'blue' }]}>
+          The question list is empty.
+        </Text>
       )}
 
       {/* Result Modal */}
@@ -201,12 +158,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingVertical: 10,
     paddingHorizontal: 20,
-    backgroundColor: COLORS.secondary,
+    backgroundColor: '#000020',
     elevation: 4,
-    minHeight: 300,
   },
   text: { margin: 20, fontSize: 22, textAlign: 'center', color: 'white' },
-  title: { fontSize: 22, marginLeft: 10, color: COLORS.background },
+  title: { fontSize: 18, marginLeft: 10, color: '#f4f4f4' },
   countContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -221,8 +177,8 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,
   },
-  correctColor: { backgroundColor: COLORS.success },
-  incorrectColor: { backgroundColor: COLORS.error },
-  white: { color: COLORS.secondary },
+  correctColor: { backgroundColor: '#00C851' },
+  incorrectColor: { backgroundColor: '#ff4444' },
+  white: { color: '#000020' },
   screenLeft: { marginLeft: 6 },
 })

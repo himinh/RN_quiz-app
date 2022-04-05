@@ -14,9 +14,14 @@ export const CategoriesCard = ({ category, navigation }) => {
 
   return (
     <TouchableOpacity activeOpacity={0.8} onPress={handleNavigateQuiz}>
-      <ImageBackground source={category.image} style={styles.imageBackground}>
+      <ImageBackground
+        source={{
+          uri: category.image,
+        }}
+        style={styles.imageBackground}
+      >
         <Text style={styles.categoryTitle}>{category.title}</Text>
-        <Text style={{ color: '#8F95B2', fontWeight: '600' }}>
+        <Text style={{ color: '#ff428f', fontWeight: '600' }}>
           {category.totalQuiz + ' Quiz'}
         </Text>
       </ImageBackground>
@@ -31,9 +36,15 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     width: windowWidth / 2 - 30,
     height: windowHeight / 3,
-    paddingTop: 25,
+    paddingTop: 18,
     paddingLeft: 20,
     borderRadius: 15,
     overflow: 'hidden',
+  },
+  categoryTitle: {
+    color: '#07234e',
+    marginBottom: 4,
+    fontSize: 14,
+    fontWeight: 500,
   },
 })

@@ -1,13 +1,17 @@
-import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { logout } from '../redux/actions'
+import {
+  logout,
+  clearCategories,
+  clearQuizzes,
+  clearUsers,
+} from '../redux/actions'
 import { authSelector } from '../redux/selector'
 import { axiosInstance } from '../utils/axiosInstance'
 
-export const NavbarModal = () => {
+export const NavbarModal = ({ navigation }) => {
   const dispatch = useDispatch()
-  const { token } = useSelector(authSelector)
+  const { token, user } = useSelector(authSelector)
 
   const signOut = async () => {
     await axiosInstance.post(
@@ -18,11 +22,18 @@ export const NavbarModal = () => {
       }
     )
     dispatch(logout())
+    dispatch(clearCategories())
+    dispatch(clearUsers())
+    dispatch(clearQuizzes())
   }
   return (
     <View style={styles.navbarModalContainer}>
-      <TouchableOpacity style={styles.navbarOption}>
-        <Text>Profile</Text>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('AdminScreen')}
+        style={styles.navbarOption}
+        disabled={user.role !== 'Admin'}
+      >
+        <Text>Admin</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={signOut} style={styles.navbarOption}>

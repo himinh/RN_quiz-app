@@ -43,9 +43,16 @@ export class CategoriesService {
       throw new NotFoundException('Not found category have id: ', id);
     return result;
   }
+  async decreaseTotalQuiz(id: string): Promise<CategoryDocument> {
+    const result = await this.categoryModel.findByIdAndUpdate(id, {
+      $inc: { totalQuiz: -1 },
+    });
+    if (!result)
+      throw new NotFoundException('Not found category have id: ', id);
+    return result;
+  }
 
   async remove(id: string): Promise<CategoryDocument> {
-    await this.categoryModel.deleteMany();
     return this.categoryModel.findByIdAndDelete(id);
   }
 }

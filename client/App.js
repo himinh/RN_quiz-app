@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { AuthStackNavigator, AppStackNavigator } from './src/navigators'
 import { Provider, useSelector } from 'react-redux'

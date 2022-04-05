@@ -21,7 +21,9 @@ import { storage } from 'src/uploads/file-helper';
 import { UploadService } from 'src/uploads/upload.service';
 import { CategoriesService } from './categories.service';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Categories')
 @Controller('categories')
 export class CategoriesController {
   constructor(

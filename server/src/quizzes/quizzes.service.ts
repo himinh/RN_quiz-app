@@ -43,7 +43,8 @@ export class QuizzesService {
   }
 
   async remove(id: string): Promise<QuizDocument> {
-    await this.quizModel.deleteMany();
-    return this.quizModel.findByIdAndDelete(id);
+    const quiz = await this.quizModel.findByIdAndDelete(id);
+    await this.categoryService.decreaseTotalQuiz(JSON.stringify(quiz.category));
+    return quiz;
   }
 }

@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 import { authSelector } from '../redux/selector'
 import { NavbarModal } from './NavbarModal'
 
-export const Header = ({ navigation, text }) => {
+export const Header = ({ navigation, text, isShowText = true }) => {
   const [openModal, setOpenModal] = useState(false)
   const { user } = useSelector(authSelector)
   return (
@@ -27,14 +27,14 @@ export const Header = ({ navigation, text }) => {
             {text}
           </Text>
         </View>
-      ) : (
+      ) : !isShowText ? null : (
         <View style={{ paddingTop: 16, paddingHorizontal: 16 }}>
           <Text style={{ fontSize: 28, color: '#fff', fontWeight: 'bold' }}>
             Hey {user.name},
           </Text>
         </View>
       )}
-      {openModal ? <NavbarModal /> : null}
+      {openModal ? <NavbarModal navigation={navigation} /> : null}
     </>
   )
 }

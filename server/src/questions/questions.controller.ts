@@ -16,7 +16,9 @@ import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { storage } from 'src/uploads/file-helper';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Questions')
 @Controller('questions')
 export class QuestionsController {
   constructor(private readonly questionService: QuestionsService) {}

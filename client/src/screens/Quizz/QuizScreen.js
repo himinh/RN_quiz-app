@@ -10,7 +10,6 @@ import {
 } from 'react-native'
 import { AntDesign } from '@expo/vector-icons'
 import { axiosInstance } from '../../utils/axiosInstance'
-import { COLORS } from '../../constants/theme'
 import { Header } from '../../components'
 import { useDispatch, useSelector } from 'react-redux'
 import { authSelector, quizzesSelector } from '../../redux/selector'
@@ -133,7 +132,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 10,
   },
-  textLogo: { fontSize: 20, color: COLORS.white, fontWeight: 'bold' },
+  textLogo: { fontSize: 20, color: '#fff', fontWeight: 'bold' },
   avatar: { width: 40, height: 40, borderRadius: 50 },
   banner: {
     display: 'flex',
@@ -151,7 +150,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 0, 67, 0.55)',
   },
   itemsContainer: {
-    backgroundColor: COLORS.white,
+    backgroundColor: '#fff',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     position: 'relative',

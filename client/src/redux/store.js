@@ -5,6 +5,7 @@ import {
   quizzesReducer,
   categoriesReducer,
   filtersReducer,
+  userssReducer,
 } from './slices'
 
 const reducer = combineReducers({
@@ -12,6 +13,7 @@ const reducer = combineReducers({
   quizzes: quizzesReducer,
   categories: categoriesReducer,
   filters: filtersReducer,
+  users: userssReducer,
 })
 
 export const store = createStore(reducer)
